@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+<body>
+	<div id="nameVue">
+    {{name}}
+</div>
+</body>
+<script>
+	var nameData = {
+    //這邊如果有打反了還請留言告訴我XD，我再修正
+    firstName : 'Tom',
+    lastName : 'Cruise',
+}
+
+//把計算屬性拆出來
+var nameComputed = {
+    name:{
+        //取值，把姓氏和名字加起來回傳
+        get:() => nameData.firstName + ' ' + nameData.lastName,
+        
+        //設值，這裡的val是指定給name的值
+        set:(val) => {
+            //把val用一個空格分割成陣列，因為姓和名中間通常有空白
+            let name = val.split(' ')
+            //給值，姓給firstName，名字給lastName
+            nameData.firstName = name[0]
+            nameData.lastName = name[1]
+        }
+    }
+}
+
+var nameVue = new Vue({
+    el:'#nameVue',
+    data:nameData,
+    computed:nameComputed,
+})
+</script>
+</html>

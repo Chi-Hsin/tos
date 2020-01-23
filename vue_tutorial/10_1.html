@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+<body><div id="ex1Vue">
+    <h4>輸入完後按Q會在console中印出輸入內容</h4>
+    <!--設定在JavaScript設定的Q-->
+    <input id="clickMe" @keyup.Q="clickEnter" v-model="message" />
+    
+    <!--也可以不命名，直接指定81
+        這個情況就不需要再添加JavaScript了-->
+    <!--<input id="clickMe" @keyup.81="clickEnter" v-model="message" />-->
+</div>
+</body>
+<script>
+//資料
+let ex1Data = {
+    message:'',
+}
+//方法
+let ex1Method = {
+    clickEnter:()=>{
+        console.log(ex1Data.message)
+    }
+}
+
+let ex1Vue = new Vue({
+    el:'#ex1Vue',
+    data:ex1Data,
+    methods:ex1Method,
+})
+</script>
+</html>

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+<body>
+	<div id="timeDiv" :title="content" @click="chg_status">
+  		{{content}}
+	</div>
+	
+	<div id="vueDiv">
+    	<span v-show="status == 'I'">我是{{ text }}</span>
+    	<span v-show="status == 'You'">你是{{ text }}</span>
+	</div>
+</body>
+
+<script>
+	let timeData = {
+    content:'現在時間',
+    nowTime:'目前是' + String(new Date()),
+}
+let timeDiv = new Vue({
+    el:'#timeDiv',
+    data:timeData,
+    methods:
+    {
+    	chg_status:function(){
+    		if(vueData.status == "I"){
+    			vueData.status = "You"
+    		}
+    		else if(vueData.status == "You"){
+    			vueData.status = "I"
+    		}
+    	}
+    }
+})
+
+let vueData = {
+    text : 'Hello!Wrold!',
+    status : "I",
+} 
+
+let vueDiv = new Vue({
+    el:'#vueDiv',
+    data:vueData,
+})
+</script>
+</html>

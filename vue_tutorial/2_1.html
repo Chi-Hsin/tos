@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+<body>
+	<div id="formList">
+    <div v-for="list in lists">
+        {{titleText}}{{list.item}}：
+        <!--用第一天學到的v-bind綁定placeholder屬性為list.item的值-->
+        <input :placeholder="list.item" :key="list.id">
+    </div>
+    <!--昨天是切換輸入，今天是反轉陣列-->
+    <input type="button" value="反轉陣列" @click="changeSort">
+	</div>
+</body>
+<script>
+var listData = {
+    titleText:'請輸入',
+    lists:[
+      {id:'name',item:'姓名'},
+      {id:'mail',item:'信箱'},
+      {id:'ph',item:'電話'}
+    ]
+}
+var listMethods = {
+    changeSort: () => {
+        //反轉陣列
+        listData.lists.reverse()
+    }
+}
+var formList = new Vue({
+    el:'#formList',
+    data:listData,
+    methods:listMethods,
+})
+</script>
+</html>

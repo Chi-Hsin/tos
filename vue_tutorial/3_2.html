@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+<body>
+	<div id="name">
+    <input v-model.trim="text" :value="text">
+    <div>您的姓名是：{{text}}</div>
+</div>
+</body>
+<script>
+	let nameData = {
+    text : '神Q超人'
+}
+
+let name = new Vue({
+    el:'#name',
+    data:nameData,
+})
+</script>
+</html>

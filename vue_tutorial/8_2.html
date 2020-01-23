@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+<body>
+	<div id="messageVue">
+    <!--使用陣列同時綁定兩個設定好樣式的物件-->
+    <span :style="[textStyle,textThrough]">
+        {{message}}
+    </span>
+</div>
+</body>
+<script>
+	let messageData = {
+    message : '這裡是警告文字！',
+    textStyle : {
+        color : 'red',
+        fontWeight : 'bold',
+    },
+    //新增一個刪除線的樣式物件
+    textThrough : {
+        textDecoration : 'line-through'
+    },
+}
+
+let messageVue = new Vue({
+    el:'#messageVue',
+    data:messageData,
+})
+</script>
+</html>

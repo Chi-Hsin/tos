@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+<body>
+	<div id="baseVue">
+    {{ 'rev:' + reText}}
+</div>
+</body>
+<script>
+	let textData = {
+    text:'Hello!World!'
+}
+
+let showText = new Vue({
+    el:'#baseVue',
+    data:textData,
+    computed:{
+        //在computed中創建一個reText屬性來放剛剛的表達式
+        reText:function(){
+            /*這裡的this指向showText這個實體
+            可以從實體物件去取我們放在data中的資料
+            也可以直接透過textData去取值*/
+            return this.text.split('').reverse().join('')
+        }
+    }
+})
+</script>
+</html>

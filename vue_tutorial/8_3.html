@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+<body>
+	<div id="messageVue">
+    <!--修改成綁定計算器的屬性-->
+    <span :style="arrTextStyle">
+        {{message}}
+    </span>
+</div>
+</body>
+<script>
+	let messageData = {
+    message : '這裡是警告文字！',
+    textStyle : {
+        color : 'green',
+        fontWeight : 'bold',
+    },
+    textThrough : {
+        textDecoration : 'line-through'
+    },
+}
+
+//新增計算屬性
+let messageComputed = {
+    //回傳需要設定的style物件陣列
+    arrTextStyle : () => {
+        return [messageData.textStyle,messageData.textThrough]
+    }
+}
+
+let messageVue = new Vue({
+    el:'#messageVue',
+    data:messageData,
+    //設定計算屬性
+    computed:messageComputed,
+})
+</script>
+</html>

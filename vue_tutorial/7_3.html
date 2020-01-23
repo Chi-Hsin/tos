@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+<body>
+	<div id="messageVue">
+    <!--把CSS中的class名稱設為key，對應的value值為啟用狀態-->
+    <span :class="messageClass">{{message}}</span>
+</div>
+</body>
+<style>
+	.redAlert{
+  color:red;
+}
+/*把字體變成租體*/
+.textBold{
+  font-weight:bold;
+}
+</style>
+<script>
+	let messageData = {
+    message : '這裡是警告！',
+    textRed : 'redAlert',
+    messageClass:{
+    	'redAlert':true,
+    	'textBold':true,
+    }
+}
+
+
+let messageVue = new Vue({
+    el:'#messageVue',
+    data:messageData
+})
+</script>
+</html>

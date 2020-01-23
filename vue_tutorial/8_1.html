@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+<body>
+	<div id="messageVue">
+    <!--直接使用v-bind:style給定一個物件，
+        物件內陳述CSS語法，如果樣式名稱有減號可以採駝峰式命名法處理。-->
+    <span :style="messageStyle">
+        {{message}}
+    </span>
+</div>
+</body>
+<script>
+	let messageData = {
+    message : '這裡是警告文字！',
+    messageStyle:{
+    	color:'blue',
+    	fontWeight:'bold'
+    }
+}
+
+let messageVue = new Vue({
+    el:'#messageVue',
+    data:messageData,
+})
+</script>
+</html>

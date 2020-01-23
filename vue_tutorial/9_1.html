@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+<body>
+	<div id="timeVue">
+    <!--在function中傳入參數$event-->
+    <input type="button" value="點我看事件狀態" @click="getValue($event)">
+</div>
+</body>
+<script>
+	let method = {
+    getValue : (event) =>{
+        console.log(event)
+    }
+}
+
+let timeVue = new Vue({
+    el:'#timeVue',
+    //設定事件屬性的物件
+    methods:method,
+})
+</script>
+</html>

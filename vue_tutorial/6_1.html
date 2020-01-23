@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+<body>
+	<div id="nameVue">
+    <input id="name" v-model="inputData" :value='x'>
+    <span style="color:red">{{alertMessage}}</sapn>
+</div>
+</body>
+<script>
+	var nameData = {
+		inputData: ''
+	}
+
+	var nameVue = new Vue({
+		el:'#nameVue',
+		data:nameData,
+		computed:{
+			alertMessage:function(){
+				return nameData.inputData == '' ? '請輸入訊息'
+												: ''
+			}
+		}
+	})
+
+
+</script>
+</html>

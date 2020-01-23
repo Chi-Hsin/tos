@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+<body>
+	<div id="messageVue">
+    <!--把textBold獨立出來寫-->
+    <span class="textBold" :class="[false?textRed:'']">{{message}}</span>
+	</div>
+</body>
+<script>
+	let messageData = {
+    message : '這裡是警告！',
+    //JS就不需要再另外指定textBold的屬性了
+    textRed : 'redAlert',
+}
+
+let messageVue = new Vue({
+    el:'#messageVue',
+    data:messageData,
+})
+</script>
+</html>

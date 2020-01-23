@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+<body>
+	<div id="gender">
+    <select v-model="selectName">
+        <option v-for="list in lists" :value="list">{{list.item}}</option>
+    </select>
+    <div>選擇的性別是:{{selectName.item}}</div>
+    <div>性別的值是:{{selectName.val}}</div>
+</div>
+</body>
+<script>
+let genderData = {
+    selectName : '',
+    lists : [
+        {val:"M",item:'男'},
+        {val:"W",item:'女'},
+    ]
+}
+
+let gender = new Vue({
+    el:'#gender',
+    data:genderData,
+})
+</script>
+</html>

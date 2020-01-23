@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<style>
+body {
+    margin: 0;
+    padding: 0
+}
+
+#elementTable {
+    width: 660px;
+    height: 550px;
+    /*background: blue*/
+}
+
+.tablecolumn {
+    width: 110px;
+    height: 110px;
+    display: inline-block
+}
+
+.tablecolumn img {
+    width: 100%;
+}
+#elementSelectBox button{width:50px;height: 50px}
+
+
+</style>
+
+<body>
+    <div class="container" id="indexSheet">
+        <div class="row" id="elementTable">
+            <!-- <table class="table table-responsive-sm">
+                <thead>
+                    <tr>
+                        <th v-for="n in 6">
+                            123
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="n in 4">
+                        <td v-for="n in 6">
+                        	{{n}}
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+ -->
+            <div v-for="(v,k) in elementBoard" >
+            	<div v-for="(v2,k2) in v" class="tablecolumn" :style="{background:v2.background}">
+            		<img :src="`img/` + v2.element + `.png` " alt="" @click.prevent="changeElement(k,k2)">
+            	</div>
+            </div>
+            <!--元素選擇框-->
+            <div id="elementSelectBox">
+                <button type="button" v-for="(v,k) in elementSelectBox" :style="{backgroundImage:`url(img/`+v+`.png)`,backgroundRepeat:'no-repeat', backgroundPosition:'center center',backgroundSize: 'contain'}" :data-dataInfo="v" @click="elementSelectEvent"></button>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
+<script>
+var indexData = new Vue({
+            el: '#indexSheet',
+            data: {
+                'elementSelectBox':['heart','light','dark','water','fire','tree',],
+                'elementSelect':'heart',
+            	'elementBoard':[
+                        [   //第一排珠
+                            {element:'heart',background:"#3E2615",type:"normal"},
+                            {element:'heart',background:"#28180F",type:"normal"},
+                            {element:'heart',background:"#3E2615",type:"normal"},
+                            {element:'heart',background:"#28180F",type:"normal"},
+                            {element:'heart',background:"#3E2615",type:"normal"},
+                            {element:'heart',background:"#28180F",type:"normal"},
+                        ],
+                        [   //第二排珠
+                            {element:'heart',background:"#28180F",type:"normal"},
+                            {element:'heart',background:"#3E2615",type:"normal"},
+                            {element:'heart',background:"#28180F",type:"normal"},
+                            {element:'heart',background:"#3E2615",type:"normal"},
+                            {element:'heart',background:"#28180F",type:"normal"},
+                            {element:'heart',background:"#3E2615",type:"normal"},
+                        ],
+                        [   //第三排珠
+                            {element:'heart',background:"#3E2615",type:"normal"},
+                            {element:'heart',background:"#28180F",type:"normal"},
+                            {element:'heart',background:"#3E2615",type:"normal"},
+                            {element:'heart',background:"#28180F",type:"normal"},
+                            {element:'heart',background:"#3E2615",type:"normal"},
+                            {element:'heart',background:"#28180F",type:"normal"},
+                        ],
+                        [   //第四排珠
+                            {element:'heart',background:"#28180F",type:"normal"},
+                            {element:'heart',background:"#3E2615",type:"normal"},
+                            {element:'heart',background:"#28180F",type:"normal"},
+                            {element:'heart',background:"#3E2615",type:"normal"},
+                            {element:'heart',background:"#28180F",type:"normal"},
+                            {element:'heart',background:"#3E2615",type:"normal"},
+                        ],
+                        [   //第五排珠
+                            {element:'heart',background:"#3E2615",type:"normal"},
+                            {element:'heart',background:"#28180F",type:"normal"},
+                            {element:'heart',background:"#3E2615",type:"normal"},
+                            {element:'heart',background:"#28180F",type:"normal"},
+                            {element:'heart',background:"#3E2615",type:"normal"},
+                            {element:'heart',background:"#28180F",type:"normal"},
+                        ],
+                    ]  
+                
+            	
+                
+            },
+            methods: {
+            	changeElement:function(x,y){//點擊版面上的珠子更換顏色
+            		this.elementBoard[x][y].element = this.elementSelect;
+            	},
+                elementSelectEvent:function(e){//更換珠子選色
+                    this.elementSelect = e.target.getAttribute("data-dataInfo");
+                },
+                alertSthing:function(e){
+                    console.log(e.code);
+                    if(e.code == "ArrowRight"){
+                        for(var i=0;i<5;i++){
+                            for(var j=0;j<6;j++){
+                                this.elementBoard[i][j].element = 'light';
+                            }
+                        }
+                    }
+                    if(e.code == "ArrowLeft"){
+                        for(var i=0;i<5;i++){
+                            for(var j=0;j<6;j++){
+                                this.elementBoard[i][j].element = 'heart';
+                            }
+                        }
+                    }
+                }
+            },
+            computed: {
+            	// allBlockElement:function() { //產生版面上30格格子的珠子物件
+	            //         // var obj = new Object();
+	            //         for (var i = 0; i < 5; i++) {
+	            //             this.aaa[i] = {};
+	            //             for(var j=0;j<6;j++){
+	            //             	this.aaa[i][j] = {}; 
+	            //             	this.aaa[i][j].background = (i%2 == j%2)?"#3E2615":"#28180F";
+	            //             	this.aaa[i][j].x = i;
+	            //             	this.aaa[i][j].y = j;
+	            //             	this.aaa[i][j].element = "heart";
+	            //             }
+	            //         }
+	            //         return this.aaa;
+             //    },	
+            },
+            created() { //模板渲染前
+                window.addEventListener('keyup',this.alertSthing);
+            },
+            mounted() {//模板渲染後
+                alert()
+                
+            }
+
+            })
+</script>
