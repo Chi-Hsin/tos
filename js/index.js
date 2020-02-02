@@ -5,58 +5,71 @@ var indexData = new Vue({
                 'count':0,
                 'comboCount':0,
                 'neighborArr':[],
-                'elementSelectBox':['heart','light','dark','water','fire','tree'],
+                'elementSelectBox':[
+                    'img/heart.png',
+                    'img/light.png',
+                    'img/dark.png',
+                    'img/water.png',
+                    'img/fire.png',
+                    'img/tree.png'
+                ],
                 'elementSelect':'heart',
                 'keyCodeCommand':{
                     'ArrowRight':'light',
                     'ArrowLeft':'heart',
                 },
+                'sectionImgUpload':{
+                    'background':'yellow',
+                    'width':'100%',
+                    'min-height':'300px'
+                },
                 'boardTemplate':[],//暫存板子上的資料
             	'elementBoard':[
                            //第一排珠
-                            {index:0,element:'fire',background:"#3E2615",type:"normal"},
-                            {index:1,element:'fire',background:"#28180F",type:"normal"},
-                            {index:2,element:'fire',background:"#3E2615",type:"normal"},
-                            {index:3,element:'heart',background:"#28180F",type:"normal"},
-                            {index:4,element:'heart',background:"#3E2615",type:"normal"},
-                            {index:5,element:'heart',background:"#28180F",type:"normal"},
+                            {index:0,element:'img/heart.png',background:"#3E2615",type:"normal"},
+                            {index:1,element:'img/heart.png',background:"#28180F",type:"normal"},
+                            {index:2,element:'img/heart.png',background:"#3E2615",type:"normal"},
+                            {index:3,element:'img/heart.png',background:"#28180F",type:"normal"},
+                            {index:4,element:'img/heart.png',background:"#3E2615",type:"normal"},
+                            {index:5,element:'img/heart.png',background:"#28180F",type:"normal"},
                         
                           //第二排珠
-                            {index:6,element:'fire',background:"#28180F",type:"normal"},
-                            {index:7,element:'fire',background:"#3E2615",type:"normal"},
-                            {index:8,element:'heart',background:"#28180F",type:"normal"},
-                            {index:9,element:'heart',background:"#3E2615",type:"normal"},
-                            {index:10,element:'heart',background:"#28180F",type:"normal"},
-                            {index:11,element:'heart',background:"#3E2615",type:"normal"},
+                            {index:6,element:'img/heart.png',background:"#28180F",type:"normal"},
+                            {index:7,element:'img/heart.png',background:"#3E2615",type:"normal"},
+                            {index:8,element:'img/heart.png',background:"#28180F",type:"normal"},
+                            {index:9,element:'img/heart.png',background:"#3E2615",type:"normal"},
+                            {index:10,element:'img/heart.png',background:"#28180F",type:"normal"},
+                            {index:11,element:'img/heart.png',background:"#3E2615",type:"normal"},
                         
                           //第三排珠
-                            {index:12,element:'fire',background:"#3E2615",type:"normal"},
-                            {index:13,element:'heart',background:"#28180F",type:"normal"},
-                            {index:14,element:'heart',background:"#3E2615",type:"normal"},
-                            {index:15,element:'heart',background:"#28180F",type:"normal"},
-                            {index:16,element:'heart',background:"#3E2615",type:"normal"},
-                            {index:17,element:'heart',background:"#28180F",type:"normal"},
+                            {index:12,element:'img/heart.png',background:"#3E2615",type:"normal"},
+                            {index:13,element:'img/heart.png',background:"#28180F",type:"normal"},
+                            {index:14,element:'img/heart.png',background:"#3E2615",type:"normal"},
+                            {index:15,element:'img/heart.png',background:"#28180F",type:"normal"},
+                            {index:16,element:'img/heart.png',background:"#3E2615",type:"normal"},
+                            {index:17,element:'img/heart.png',background:"#28180F",type:"normal"},
                         
                            //第四排珠
-                            {index:18,element:'heart',background:"#28180F",type:"normal"},
-                            {index:19,element:'heart',background:"#3E2615",type:"normal"},
-                            {index:20,element:'heart',background:"#28180F",type:"normal"},
-                            {index:21,element:'heart',background:"#3E2615",type:"normal"},
-                            {index:22,element:'heart',background:"#28180F",type:"normal"},
-                            {index:23,element:'heart',background:"#3E2615",type:"normal"},
+                            {index:18,element:'img/heart.png',background:"#28180F",type:"normal"},
+                            {index:19,element:'img/heart.png',background:"#3E2615",type:"normal"},
+                            {index:20,element:'img/heart.png',background:"#28180F",type:"normal"},
+                            {index:21,element:'img/heart.png',background:"#3E2615",type:"normal"},
+                            {index:22,element:'img/heart.png',background:"#28180F",type:"normal"},
+                            {index:23,element:'img/heart.png',background:"#3E2615",type:"normal"},
                         
                            //第五排珠
-                            {index:24,element:'heart',background:"#3E2615",type:"normal"},
-                            {index:25,element:'heart',background:"#28180F",type:"normal"},
-                            {index:26,element:'heart',background:"#3E2615",type:"normal"},
-                            {index:27,element:'heart',background:"#28180F",type:"normal"},
-                            {index:28,element:'heart',background:"#3E2615",type:"normal"},
-                            {index:29,element:'heart',background:"#28180F",type:"normal"},
+                            {index:24,element:'img/heart.png',background:"#3E2615",type:"normal"},
+                            {index:25,element:'img/heart.png',background:"#28180F",type:"normal"},
+                            {index:26,element:'img/heart.png',background:"#3E2615",type:"normal"},
+                            {index:27,element:'img/heart.png',background:"#28180F",type:"normal"},
+                            {index:28,element:'img/heart.png',background:"#3E2615",type:"normal"},
+                            {index:29,element:'img/heart.png',background:"#28180F",type:"normal"},
                         
                     ],
                     'handMotionOrigin':0,//紀錄離開的轉點位置
                     'handMotionOver':0,//紀錄經過的轉點位置
             	    'handMotionContinue':0,//判斷滑鼠是否按著不放   才能拖移元素
+
                 
             },
             methods: {
@@ -202,6 +215,30 @@ var indexData = new Vue({
                     var originIndex = this.boardTemplate.findIndex(function(x){return x.element == element})
                     return originIndex;
                 },
+                sendTest:function(){
+
+                },
+                getTest:function(){
+                    fireRoot.limitToLast(1).on("value",function(s){
+                        aaa = s.val()
+                    })
+                },
+                handleFiles:function(e){
+                  var fileList = e.target.files;
+                  var reader=new FileReader();//使用FileReader讀取圖片並轉化base64型態的URL網址字串  以利儲存
+                  reader.readAsDataURL(fileList[0]);
+                  reader.onload = function()
+                  {
+                      indexData.elementSelectBox[0] = this.result;
+
+                  }
+                },
+                localStorTest:function(){
+                    localStorage.setItem("aaa",JSON.stringify(indexData.elementBoard))
+                },
+                localStorTest2:function(){
+                    localStorage.setItem("bbb",JSON.stringify(indexData.elementBoard))
+                },
             },
             computed: {
             	// allBlockElement:function() { //產生版面上30格格子的珠子物件
@@ -224,6 +261,17 @@ var indexData = new Vue({
             },
             mounted() {//模板渲染後 EX:加載完後 把Loading動畫關閉的效果實現
                 // alert()
+                var config = {
+                  apiKey: "IWjpwwSEwllTScsxOkB0G3xMqxq1TXruzA1vcieA",
+                  authDomain: "relaycontrol-fc8da.firebaseapp.com",
+                  databaseURL: "https://tosmaker.firebaseio.com/",
+                  projectId: "tosmaker",
+                  storageBucket: "",
+                  messagingSenderId: "690750323149"};
+                
+                firebase.initializeApp(config);// Initialize Firebase
+                fireRoot = firebase.database().ref("/player");
+
                 
             }
 
