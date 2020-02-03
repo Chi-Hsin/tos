@@ -23,13 +23,17 @@ var indexData = new Vue({
                     'width':'100%',
                     'min-height':'300px'
                 },
-                'mousePicDisplay':false,
-                'mousePicSrc':"img/fire.png",
-                'mousePicStyle':{
-                    'position':'absolute',
-                    'left':0,
-                    'top':0,
-                    'display':'none',
+                'sectionImgUploadData':0,
+                'mousePicSetting':{
+                    'src':"img/fire.png",
+                    'style':{
+                        'width':'100px',
+                        'height':'auto',
+                        'position':'absolute',
+                        'left':0,
+                        'top':0,
+                        'display':'none',
+                    }
                 },
                 'elementTableStyle':{
                     'width':'660px',
@@ -88,6 +92,7 @@ var indexData = new Vue({
             methods: {
                 elementSelectEvent:function(e){//更換珠子選色
                     this.elementSelect = e.target.getAttribute("data-dataInfo");
+                    this.sectionImgUploadData = e.target.getAttribute("data-dataIndex")
                 },
                 alertSthing:function(e){
                     var hasValue = this.keyCodeCommand.hasOwnProperty(e.code);
@@ -111,15 +116,15 @@ var indexData = new Vue({
                 },
                 test2:function(e){//滑鼠觸碰元素觸發
                     this.indexLocate = e.target.getAttribute("data-index");
-                    
+                    this.mousePic(e);
 
                     if(this.handMotionContinue){//當滑鼠按著不放時  才交換元素
                         if(this.handMotionOver == Number(this.indexLocate)){return;}
                         this.handMotionOver = Number(this.indexLocate);
                         this.elementBoard[this.indexLocate].opacity = 0.5;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       
                         // console.log("接觸第"+this.handMotionOver+"個元素");
-                        this.test3()
-                        this.elementTableStyle.cursor = "url('img/fire.png'),auto";
+                        this.test3();
+                        
                     }
                 },
                 test3:function(e){//交換元素
@@ -130,11 +135,14 @@ var indexData = new Vue({
                 //滑鼠按著不放+滑鼠放開的動作  其實就是click
                 test4:function(e){//滑鼠按著不放
                     var index = e.target.getAttribute("data-index");
+                    this.mousePicSetting.style.display = "block";
+                    this.mousePicSetting.src = this.elementBoard[index].element;
+                    this.mousePic(e);
 
                     if(this.handMotionContinue == 1){ //如果是移動狀態  又跑到這個狀態時 那麼就設定滑鼠放開的狀態 而不改色
                         this.handMotionContinue = 0;
                         this.elementBoard[index].opacity = 1;
-                        this.elementTableStyle.cursor = "default";
+                        this.mousePicSetting.style.display = 'none';
                         console.log("移動狀態解除");
                         return;
                     }
@@ -148,17 +156,17 @@ var indexData = new Vue({
                     if(this.handMotionContinue){
                         this.elementBoard[index].element = this.elementSelect;
                         this.handMotionContinue = 0;
+                        this.mousePicSetting.style.display = 'none';
                         console.log("滑鼠放開");
                         console.log("珠子已換色");
                     }
                 },
-                // mousePic:function(e){//圖片跟著滑鼠移動 廢除 已改用cursor屬性更方便
+                mousePic:function(e){//圖片跟著滑鼠移動
                    
-                   
-                //    this.mousePicStyle.left = e.clientX +30+ "px";
-                //    this.mousePicStyle.top = e.clientY +30+ "px";
-                //    console.log("圖片跟著滑鼠移動",",X=",e.clientX,",Y=",e.clientY);
-                // },
+                   this.mousePicSetting.style.left = e.clientX +30+ "px";
+                   this.mousePicSetting.style.top = e.clientY +30+ "px";
+                   console.log("圖片跟著滑鼠移動",",X=",e.clientX,",Y=",e.clientY);
+                },
                 boardAll:function(obj){
                     for(var i=0;i<5;i++){
                         for(var j=0;j<6;j++){
@@ -258,7 +266,9 @@ var indexData = new Vue({
                   reader.readAsDataURL(fileList[0]);
                   reader.onload = function()
                   {
-                      indexData.elementSelectBox[0] = this.result;
+                    var index = e.target.getAttribute("data-dataInfo");
+                    indexData.elementSelectBox[index] = this.result;
+                    // alert("圖片家仔完成")
 
                   }
                 },
