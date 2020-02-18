@@ -147,6 +147,11 @@ var indexData = new Vue({
                 },
                 test3:function(e){//交換元素
                         var change =  this.elementBoard[this.handMotionOrigin].element;
+                        var changeDB = this.elementSelectBox.indexOf(change);
+
+                        this.elementBoardDB[this.handMotionOrigin] = this.elementBoardDB[this.handMotionOver];
+                        this.elementBoardDB[this.handMotionOver] = changeDB;
+
                         this.elementBoard[this.handMotionOrigin].element = this.elementBoard[this.handMotionOver].element;
                         this.elementBoard[this.handMotionOver].element = change;
                 },
@@ -368,6 +373,8 @@ var indexData = new Vue({
                         indexData.urlId = urlId;
                         fireRoot.child("memberData/" + urlId).once("value",function(s){
                            indexData.loadingData = s.val();
+                           indexData.elementBoardDB = s.val();
+
                            for(var i=0;i<30;i++){
                                 var aaa = indexData.loadingData[i];
                                 indexData.elementBoard[i].element = indexData.elementSelectBox[aaa];
