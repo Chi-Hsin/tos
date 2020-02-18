@@ -177,6 +177,7 @@ var indexData = new Vue({
                 },
                 test5:function(index){//滑鼠放開
                     if(this.handMotionContinue){
+                        this.elementBoardDB[index] = this.elementSelectBox.indexOf(this.elementSelect);
                         this.elementBoard[index].element = this.elementSelect;
                         this.handMotionContinue = 0;
                         this.mousePicSetting.style.display = 'none';
