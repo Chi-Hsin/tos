@@ -16,38 +16,41 @@
 
 
 <body>
-    <div class="container" id="indexSheet">
+    <div class="container-fluid" id="indexSheet">
+
+    	<!-- 元素版開始 -->
         <div class="row" id="elementTable" :style="elementTableStyle">
-        	<img :src="mousePicSetting.src" :style="mousePicSetting.style">
-            現在的位置是在第{{indexLocate}}個元素
-            <div v-for="i in 5" >
-            	<div v-for="j in 6" class="tablecolumn" :style="{background:elementBoard[6*i+j-7].background}" :data-index="elementBoard[6*i+j-7].index" @mousemove="test2($event)"  @mouseout="test1" @mousedown="test4" @mouseup="test5(6*i+j-7)">
-            		<img :src="elementBoard[6*i+j-7].element" alt="" :data-index="elementBoard[6*i+j-7].index" :style="{opacity:elementBoard[6*i+j-7].opacity}">
-            	</div>
-            </div>
-            <!--元素選擇框-->
-            <div id="elementSelectBox">
-                <button type="button" v-for="(v,k) in elementSelectBox" :style="{backgroundImage:`url(`+v+`)`,backgroundRepeat:'no-repeat', backgroundPosition:'center center',backgroundSize: 'contain'}" :data-dataInfo="v" :data-dataIndex="k" @click="elementSelectEvent"></button>
-            </div>
-            <!-- <button @click="comboCalc">計算COMBO</button> -->
-            <button @click="randomBoard">隨機版面</button>
-            <!-- <button @click="sendTest">送資料測試</button>
-            <button @click="getTest">取資料測試</button>
-            <button @click="localStorTest">儲存用戶端資料測試</button>
-            <button @click="localStorTest2">儲存用戶端資料測試2</button> -->
-            <div :style="sectionImgUpload" >
-            	<button>重設</button>
-            	<button>轉全版</button>
-            	<div>
-            		<input type="file" name="imageUpload" id="imageUpload" @change="handleFiles" :data-dataInfo="sectionImgUploadData">
-            	</div>
-            </div>
+        	<div class="col-sm-8 bg-info">
+		        		<img :src="mousePicSetting.src" :style="mousePicSetting.style"><!--滑鼠圖標-->
+		            現在的位置是在第{{indexLocate}}個元素
+		            <div v-for="i in 5" >
+		            	<div v-for="j in 6" class="tablecolumn" :style="{background:elementBoard[6*i+j-7].background}" :data-index="elementBoard[6*i+j-7].index" @mousemove="test2($event)"  @mouseout="test1" @mousedown="test4" @mouseup="test5(6*i+j-7)">
+		            		<img :src="elementBoard[6*i+j-7].element" alt="" :data-index="elementBoard[6*i+j-7].index" :style="{opacity:elementBoard[6*i+j-7].opacity}">
+		            	</div>
+		            </div>
+		           
+		            
+        	</div>
+        	<div class="col-sm-4 bg-success">
+        		<button @click="randomBoard">隨機版面</button>
+        		<button @click="saveElementBoard">儲存</button>
+        		 <!--元素選擇框-->
+	            <div id="elementSelectBox">
+	                <button type="button" v-for="(v,k) in elementSelectBox" :style="{backgroundImage:`url(`+v+`)`,backgroundRepeat:'no-repeat', backgroundPosition:'center center',backgroundSize: 'contain'}" :data-dataInfo="v" :data-dataIndex="k" @click="elementSelectEvent"></button>
+	            </div>
+	            <div :style="sectionImgUpload" >
+	            	<button @click="resetElementSelect">重設</button>
+	            	<button @click="boardAll">轉全版</button>
+	            	<div>
+	            		<input type="file" name="imageUpload" id="imageUpload" @change="handleFiles" :data-dataInfo="sectionImgUploadData">
+	            	</div>
+	            </div>
+        	</div>
+        	
         </div>
-
+        <!-- 元素版結束 -->
     </div>
-
 </body>
-
 </html>
 <script src="https://www.gstatic.com/firebasejs/5.2.0/firebase.js"></script>
 <script src="js/index.js"></script>

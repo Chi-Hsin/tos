@@ -13,21 +13,29 @@ var indexData = new Vue({
                     'img/fire.png',
                     'img/tree.png'
                 ],
+                'elementSelectBoxTemplate':[
+                    'img/heart.png',
+                    'img/light.png',
+                    'img/dark.png',
+                    'img/water.png',
+                    'img/fire.png',
+                    'img/tree.png'
+                ],
                 'elementSelect':'img/heart.png',
                 'keyCodeCommand':{
                     'ArrowRight':'light',
                     'ArrowLeft':'heart',
                 },
                 'sectionImgUpload':{
-                    'background':'yellow',
+                    // 'background':'yellow',
                     'width':'100%',
                     'min-height':'300px'
                 },
-                'sectionImgUploadData':0,
+                'sectionImgUploadData':0,//目前點選的符石配置
                 'mousePicSetting':{
                     'src':"img/fire.png",
                     'style':{
-                        'width':'100px',
+                        'width':'70px',
                         'height':'auto',
                         'position':'absolute',
                         'left':0,
@@ -36,11 +44,21 @@ var indexData = new Vue({
                     }
                 },
                 'elementTableStyle':{
-                    'width':'660px',
-                    'height':'550px',
-                    'cursor':'default'
+                    // 'width':'660px',
+                    // 'height':'550px',
+                    // 'position':'relative'
                 },
                 'boardTemplate':[],//暫存板子上的資料
+                'elementBoardDB':[//存放板子上珠子對應的索引號
+                    0,0,0,0,0,0,
+                    0,0,0,0,0,0,
+                    0,0,0,0,0,0,
+                    0,0,0,0,0,0,
+                    0,0,0,0,0,0
+                ],
+                "loadingData":[],
+                "memberList":[],
+                "urlId":"",
             	'elementBoard':[
                            //第一排珠
                             {index:0,element:'img/heart.png',background:"#3E2615",type:"normal",opacity:1},
@@ -161,28 +179,56 @@ var indexData = new Vue({
                         console.log("珠子已換色");
                     }
                 },
+                resetElementSelect:function(){
+                    var index = this.sectionImgUploadData;
+                    this.elementSelectBox[index] = this.elementSelectBoxTemplate[index]
+                },
                 mousePic:function(e){//圖片跟著滑鼠移動
                    
-                   this.mousePicSetting.style.left = e.clientX +30+ "px";
-                   this.mousePicSetting.style.top = e.clientY +30+ "px";
+                   this.mousePicSetting.style.left = e.clientX + 20 + "px";
+                   this.mousePicSetting.style.top = e.clientY + 20 + "px";
                    console.log("圖片跟著滑鼠移動",",X=",e.clientX,",Y=",e.clientY);
                 },
-                boardAll:function(obj){
-                    for(var i=0;i<5;i++){
-                        for(var j=0;j<6;j++){
-                             this.elementBoard[6*i+j].element = obj[6*i+j];
-                        }
+                boardAll:function(){//轉全版同符石
+                    this.elementBoardDB = [];
+                    for(var i=0;i<30;i++){
+                        this.elementBoardDB.push(this.sectionImgUploadData);
+                        this.elementBoard[i].element = this.elementSelectBox[this.sectionImgUploadData];
                     }
                 },
-                randomBoard:function(){
-                    var arr = [];
+                randomBoard:function(){//隨機轉版
+                    this.elementBoardDB = [];
                     for(var i=0;i<30;i++){
                         var rrr = Math.floor(Math.random() * 6);
-                        arr.push(this.elementSelectBox[rrr]);
+                        this.elementBoardDB.push(rrr);//儲存此版面
+                        this.elementBoard[i].element = this.elementSelectBox[rrr];
                     }
-                    this.boardAll(arr);
                 },
-                comboCalc:function(){
+                saveElementBoard:function(){
+                    var key;
+                    
+                    if(this.loadingData.length == 0){
+                        fireRoot.child("memberData").push(this.elementBoardDB);
+                        fireRoot.child("memberData").limitToLast(1).once("child_added",function(s){
+                            // console.log("新增的這筆資料",",",s.key);
+                            key = s.key;
+                        })
+                        fireRoot.child("memberList").push(key);
+                        window.location.href = "index.html?id=" + key;//重新轉址或重載此頁面
+                    }else{
+                        var obj = {};
+                        obj[this.urlId] = this.elementBoardDB;
+                        // console.log(obj);
+                        fireRoot.child("memberData")
+                                .update(obj)
+                                // .then(function(){
+                                //     window.location.href = "index.html?id=" + indexData.urlId;//重新轉址或重載此頁面
+                                // });
+                    }
+
+
+                },
+                comboCalc:function(){//計算Combo數  暫時擱置
                     this.boardTemplate = JSON.parse(JSON.stringify(this.elementBoard))
 
                     for(var i=0;i<this.elementSelectBox.length;i++){
@@ -249,16 +295,8 @@ var indexData = new Vue({
                 //     }
                 // },
                 findBoardIndex:function(element){
-                    var originIndex = this.boardTemplate.findIndex(function(x){return x.element == element})
+                    var originIndex = this.wte.findIndex(function(x){return x.element == element})
                     return originIndex;
-                },
-                sendTest:function(){
-
-                },
-                getTest:function(){
-                    fireRoot.limitToLast(1).on("value",function(s){
-                        aaa = s.val()
-                    })
                 },
                 handleFiles:function(e){
                   var fileList = e.target.files;
@@ -299,17 +337,45 @@ var indexData = new Vue({
                 window.addEventListener('keyup',this.alertSthing);
             },
             mounted() {//模板渲染後 EX:加載完後 把Loading動畫關閉的效果實現
-                // alert()
                 var config = {
                   apiKey: "IWjpwwSEwllTScsxOkB0G3xMqxq1TXruzA1vcieA",
                   authDomain: "relaycontrol-fc8da.firebaseapp.com",
                   databaseURL: "https://tosmaker.firebaseio.com/",
                   projectId: "tosmaker",
                   storageBucket: "",
-                  messagingSenderId: "690750323149"};
+                  messagingSenderId: "690750323149"
+                };
                 
                 firebase.initializeApp(config);// Initialize Firebase
                 fireRoot = firebase.database().ref("/player");
+                fireRoot.child("memberList").once("value",function(s){
+                    indexData.memberList = Object.values(s.val());//取得已有之名單資料
+                   // console.log(memberList)
+
+                }).then(function(){
+                    console.log("載入完成!")
+
+                    //網址參數判定
+                    var url = new URL(location.href);
+                    var urlId = url.searchParams.get("id");
+                    if(indexData.memberList.indexOf(urlId) == -1 || urlId == "null"){
+                        //do default
+                        alert("使用預設盤面~");
+                    }
+                    else{
+                        //database data loading
+                        alert("載入已有盤面~");
+                        indexData.urlId = urlId;
+                        fireRoot.child("memberData/" + urlId).once("value",function(s){
+                           indexData.loadingData = s.val();
+                           for(var i=0;i<30;i++){
+                                var aaa = indexData.loadingData[i];
+                                indexData.elementBoard[i].element = indexData.elementSelectBox[aaa];
+                            }
+                        })
+                    }
+                })
+               
 
                 
             }
