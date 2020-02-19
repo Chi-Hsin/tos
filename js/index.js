@@ -48,6 +48,14 @@ var indexData = new Vue({
                     // 'height':'550px',
                     // 'position':'relative'
                 },
+                "loadingPic":{
+                    "style":{
+                        "display":""
+                    },
+                    "randomNumber":""
+                    
+                },
+
                 'boardTemplate':[],//暫存板子上的資料
                 'elementBoardDB':[//存放板子上珠子對應的索引號
                     0,0,0,0,0,0,
@@ -56,7 +64,6 @@ var indexData = new Vue({
                     0,0,0,0,0,0,
                     0,0,0,0,0,0
                 ],
-                "loadingData":[],
                 "memberList":[],
                 "urlId":"",
             	'elementBoard':[
@@ -213,8 +220,8 @@ var indexData = new Vue({
                 saveElementBoard:function(){
                     var key;
                     
-                    if(this.loadingData.length == 0){
-                        fireRoot.child("memberData").push(this.elementBoardDB);
+                    if(this.urlId == ""){
+                        fireRoot.child("memberData").push({"elementBoard":this.elementBoardDB,"elementSelectBox":this.elementSelectBox});
                         fireRoot.child("memberData").limitToLast(1).once("child_added",function(s){
                             // console.log("新增的這筆資料",",",s.key);
                             key = s.key;
@@ -223,16 +230,19 @@ var indexData = new Vue({
                         window.location.href = "index.html?id=" + key;//重新轉址或重載此頁面
                     }else{
                         var obj = {};
-                        obj[this.urlId] = this.elementBoardDB;
+                        obj[this.urlId] = {"elementBoard":this.elementBoardDB,"elementSelectBox":this.elementSelectBox};
                         // console.log(obj);
                         fireRoot.child("memberData")
                                 .update(obj)
-                                // .then(function(){
-                                //     window.location.href = "index.html?id=" + indexData.urlId;//重新轉址或重載此頁面
-                                // });
+                                .then(function(){
+                                    window.location.href = "index.html?id=" + indexData.urlId;//重新轉址或重載此頁面
+                                });
                     }
 
 
+                },
+                loadingControl:function(){
+                    this.loadingPic.style.display = "none";
                 },
                 comboCalc:function(){//計算Combo數  暫時擱置
                     this.boardTemplate = JSON.parse(JSON.stringify(this.elementBoard))
@@ -365,21 +375,27 @@ var indexData = new Vue({
                     var url = new URL(location.href);
                     var urlId = url.searchParams.get("id");
                     if(indexData.memberList.indexOf(urlId) == -1 || urlId == "null"){
-                        //do default
-                        alert("使用預設盤面~");
+                        console.log("使用預設盤面~");
+                        setTimeout(indexData.loadingControl,500)
                     }
                     else{
-                        //database data loading
-                        alert("載入已有盤面~");
+                        console.log("載入已有盤面~");
                         indexData.urlId = urlId;
                         fireRoot.child("memberData/" + urlId).once("value",function(s){
-                           indexData.loadingData = s.val();
-                           indexData.elementBoardDB = s.val();
-
+                           //讀取資料庫資料
+                           indexData.elementBoardDB = s.val().elementBoard;
+                           indexData.elementSelectBox = s.val().elementSelectBox;
+                           //讀取儲存資料後  配佈版上的元素
                            for(var i=0;i<30;i++){
-                                var aaa = indexData.loadingData[i];
+                                var aaa = indexData.elementBoardDB[i];
                                 indexData.elementBoard[i].element = indexData.elementSelectBox[aaa];
                             }
+                        }).then(function(){
+                            
+                            indexData.loadingPic.randomNumber = Math.floor(Math.random() * 2330);
+
+
+                            setTimeout(indexData.loadingControl,2000)
                         })
                     }
                 })

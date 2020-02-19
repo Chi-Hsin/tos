@@ -17,12 +17,19 @@
 
 <body>
     <div class="container-fluid" id="indexSheet">
-
+    	<div class="row" id="loadingBlock" :style="loadingPic.style">
+    		<div id="loadingMiddleBox">
+    			<p class="text-white">猜猜我是誰?</p>
+	    		<p><img :src="`http://www.tosapp.tw/source/plugin/webtech_tosys/data/card/card_`+loadingPic.randomNumber+`.png`"  id="loadingPic1"></p>
+	        	<img src="img/loading.gif" id="loadingPic2">
+    		</div>
+    		
+        </div>
     	<!-- 元素版開始 -->
         <div class="row" id="elementTable" :style="elementTableStyle">
-        	<div class="col-sm-8 bg-info">
+        	<div class="col-sm-8">
 		        		<img :src="mousePicSetting.src" :style="mousePicSetting.style"><!--滑鼠圖標-->
-		            現在的位置是在第{{indexLocate}}個元素
+		            <!-- 現在的位置是在第{{indexLocate}}個元素 -->
 		            <div v-for="i in 5" >
 		            	<div v-for="j in 6" class="tablecolumn" :style="{background:elementBoard[6*i+j-7].background}" :data-index="elementBoard[6*i+j-7].index" @mousemove="test2($event)"  @mouseout="test1" @mousedown="test4" @mouseup="test5(6*i+j-7)">
 		            		<img :src="elementBoard[6*i+j-7].element" alt="" :data-index="elementBoard[6*i+j-7].index" :style="{opacity:elementBoard[6*i+j-7].opacity}">
@@ -31,7 +38,7 @@
 		           
 		            
         	</div>
-        	<div class="col-sm-4 bg-success">
+        	<div class="col-sm-4">
         		<button @click="randomBoard">隨機版面</button>
         		<button @click="saveElementBoard">儲存</button>
         		 <!--元素選擇框-->
