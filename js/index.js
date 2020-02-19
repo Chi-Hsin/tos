@@ -13,6 +13,11 @@ var indexData = new Vue({
                     'img/fire.png',
                     'img/tree.png'
                 ],
+                "elementSelectBoxButton":{
+                    "width":"50px",
+                    "height":"50px",
+                    "border":"3px blue solid"
+                },
                 'elementSelectBoxTemplate':[
                     'img/heart.png',
                     'img/light.png',
@@ -49,8 +54,11 @@ var indexData = new Vue({
                     // 'position':'relative'
                 },
                 "loadingPic":{
-                    "style":{
+                    "blockStyle":{
                         "display":""
+                    },
+                    "imageStyle":{
+                        "display":"none"
                     },
                     "randomNumber":""
                     
@@ -120,15 +128,17 @@ var indexData = new Vue({
                     this.sectionImgUploadData = e.target.getAttribute("data-dataIndex")
                 },
                 alertSthing:function(e){
-                    var hasValue = this.keyCodeCommand.hasOwnProperty(e.code);
-                    if(!hasValue){return;}
-                    else{
-                         for(var i=0;i<5;i++){
-                            for(var j=0;j<6;j++){
-                                this.elementBoard[6*i+j].element = this.keyCodeCommand[e.code];
-                            }
-                        }
-                    }
+                    // var hasValue = this.keyCodeCommand.hasOwnProperty(e.code);
+                    // if(!hasValue){return;}
+                    // else{
+                    //      for(var i=0;i<5;i++){
+                    //         for(var j=0;j<6;j++){
+                    //             this.elementBoard[6*i+j].element = this.keyCodeCommand[e.code];
+                    //         }
+                    //     }
+                    // }
+                    console.log("圖片載入完成")
+                    this.loadingPic.imageStyle = "block";
                 },
                 calcCombo:function(index){//計算版面Combo數
                 },
@@ -242,7 +252,7 @@ var indexData = new Vue({
 
                 },
                 loadingControl:function(){
-                    this.loadingPic.style.display = "none";
+                    this.loadingPic.blockStyle.display = "none";
                 },
                 comboCalc:function(){//計算Combo數  暫時擱置
                     this.boardTemplate = JSON.parse(JSON.stringify(this.elementBoard))
@@ -393,7 +403,7 @@ var indexData = new Vue({
                         }).then(function(){
                             
                             indexData.loadingPic.randomNumber = Math.floor(Math.random() * 2330);
-
+                            
 
                             setTimeout(indexData.loadingControl,2000)
                         })

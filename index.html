@@ -17,11 +17,12 @@
 
 <body>
     <div class="container-fluid" id="indexSheet">
-    	<div class="row" id="loadingBlock" :style="loadingPic.style">
+    	<div class="row" id="loadingBlock" :style="loadingPic.blockStyle">
+
     		<div id="loadingMiddleBox">
     			<p class="text-white">猜猜我是誰?</p>
-	    		<p><img :src="`http://www.tosapp.tw/source/plugin/webtech_tosys/data/card/card_`+loadingPic.randomNumber+`.png`"  id="loadingPic1"></p>
-	        	<img src="img/loading.gif" id="loadingPic2">
+	    		<p><img @load="alertSthing" :style="loadingPic.imageStyle" :src="`http://www.tosapp.tw/source/plugin/webtech_tosys/data/card/card_`+loadingPic.randomNumber+`.png`"  id="loadingPic1"></p>
+	        	<img src="img/loading.gif" id="loadingPic2" >
     		</div>
     		
         </div>
