@@ -13,11 +13,14 @@ var indexData = new Vue({
                     'img/fire.png',
                     'img/tree.png'
                 ],
-                "elementSelectBoxButton":{
-                    "width":"50px",
-                    "height":"50px",
-                    "border":"3px blue solid"
-                },
+                "elementSelectBoxButton":[
+                     "transparent",
+                     "transparent",
+                     "transparent",
+                     "transparent",
+                     "transparent",
+                     "transparent"
+                ],
                 'elementSelectBoxTemplate':[
                     'img/heart.png',
                     'img/light.png',
@@ -126,6 +129,12 @@ var indexData = new Vue({
                 elementSelectEvent:function(e){//更換珠子選色
                     this.elementSelect = e.target.getAttribute("data-dataInfo");
                     this.sectionImgUploadData = e.target.getAttribute("data-dataIndex")
+
+                    for(var i=0;i<6;i++){
+                        this.elementSelectBoxButton[i] = "transparent";
+                    }
+                    this.elementSelectBoxButton[this.sectionImgUploadData] = "blue";
+
                 },
                 alertSthing:function(e){
                     // var hasValue = this.keyCodeCommand.hasOwnProperty(e.code);
@@ -250,6 +259,16 @@ var indexData = new Vue({
                     }
 
 
+                },
+                screenshootNow:function(){
+                   var canvas = document.createElement('canvas');
+                   var ddd = document.getElementById("elementBoard");
+                   var ddd_clone = ddd.cloneNode(true);
+                   canvas.appendChild(ddd_clone);
+                   var ctx = canvas.getContext('2d');
+                   var rrr = canvas.toDataURL("image/jpeg", 1.0);
+                   console.log(rrr)
+                  
                 },
                 loadingControl:function(){
                     this.loadingPic.blockStyle.display = "none";
@@ -386,7 +405,8 @@ var indexData = new Vue({
                     var urlId = url.searchParams.get("id");
                     if(indexData.memberList.indexOf(urlId) == -1 || urlId == "null"){
                         console.log("使用預設盤面~");
-                        setTimeout(indexData.loadingControl,500)
+                        indexData.loadingPic.randomNumber = Math.floor(Math.random() * 2330);
+                        setTimeout(indexData.loadingControl,2000)
                     }
                     else{
                         console.log("載入已有盤面~");
