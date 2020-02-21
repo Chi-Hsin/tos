@@ -34,12 +34,8 @@ var indexData = new Vue({
                     'ArrowRight':'light',
                     'ArrowLeft':'heart',
                 },
-                'sectionImgUpload':{
-                    // 'background':'yellow',
-                    'width':'100%',
-                    'min-height':'300px'
-                },
                 'sectionImgUploadData':0,//目前點選的符石配置
+                "localSelect":0,//目前點選的客戶端儲存 位置
                 'mousePicSetting':{
                     'src':"img/fire.png",
                     'style':{
@@ -66,7 +62,17 @@ var indexData = new Vue({
                     "randomNumber":""
                     
                 },
-
+                "localStorageData":[
+                    {src:"img/tower_local.png",name:"版面一"},
+                    {src:"img/tower_local.png",name:"版面二"},
+                    {src:"img/tower_local.png",name:"版面三"},
+                    {src:"img/tower_local.png",name:"版面四"},
+                    {src:"img/tower_local.png",name:"版面五"},
+                    {src:"img/tower_local.png",name:"版面六"},
+                ],
+                "localStorageDataStyle":[
+                    "transparent","transparent","transparent","transparent","transparent","transparent"
+                ],
                 'boardTemplate':[],//暫存板子上的資料
                 'elementBoardDB':[//存放板子上珠子對應的索引號
                     0,0,0,0,0,0,
@@ -236,7 +242,7 @@ var indexData = new Vue({
                         this.elementBoard[i].element = this.elementSelectBox[rrr];
                     }
                 },
-                saveElementBoard:function(){
+                saveElementBoard:function(){//儲存到資料庫
                     var key;
                     
                     if(this.urlId == ""){
@@ -260,15 +266,25 @@ var indexData = new Vue({
 
 
                 },
-                screenshootNow:function(){
-                   var canvas = document.createElement('canvas');
+                localSelectEvent:function(e){//記下 目前點到的儲存版面位置
+                    var index = e.target.getAttribute("data-index");
+                    // console.log(index)
+                    this.localSelect = index;
+                    for(var i=0;i<this.localStorageDataStyle.length;i++){
+                        this.$set(this.localStorageDataStyle, i,  "transparent")
+                    }
+                    this.$set(this.localStorageDataStyle, index,  "red")
+                },
+                saveToLocal:function(){ //儲存當前的照片
+                    // this.localStorageData
                    var ddd = document.getElementById("elementBoard");
-                   var ddd_clone = ddd.cloneNode(true);
-                   canvas.appendChild(ddd_clone);
-                   var ctx = canvas.getContext('2d');
-                   var rrr = canvas.toDataURL("image/jpeg", 1.0);
-                   console.log(rrr)
-                  
+                   var opt = {scale:0.2};
+                   html2canvas(ddd,opt).then(function(canvas) {
+                        var base64 = canvas.toDataURL();
+                        indexData.localStorageData[indexData.localSelect].src = base64;
+                        
+                    });
+
                 },
                 loadingControl:function(){
                     this.loadingPic.blockStyle.display = "none";

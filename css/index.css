@@ -45,5 +45,11 @@ body {
 #elementSelectBox button{
     width:50px;
     height: 50px;
+    margin-right:3px;
     /*border:3px blue solid;*/
 }
+
+#elementSelectBox button:hover{border:3px solid blue;}
+
+#localDiv{margin-top: 10px}
+#localDiv:hover{background: #ccc}
