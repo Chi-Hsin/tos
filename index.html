@@ -57,15 +57,20 @@
         		<h3><span class="badge badge-primary">版面變換</span></h3>
         		<button @click="randomBoard">隨機版面</button>
 	            <button @click="boardAll">轉換全版</button>
+	            <button @click="localBoardSet">轉換為該版面</button>
 	            
         		<h3><span class="badge badge-primary">版面儲存</span></h3>
         		<button @click="saveElementBoard">儲存至資料庫</button>
         		<button @click="saveToLocal">儲存該版面</button>
+        		<button @click="deleteLocal">清除暫存</button>
         		
-        		<div v-for="(v,k) in localStorageData" id="localDiv" @click="localSelectEvent" :data-index="k" :style="{background:localStorageDataStyle[k]}">
-        			<img :src="v.src" @click="localSelectEvent">
-        			<input type="" :value="v.name" >
+        		<div id="localDivOuter">
+        			<div v-for="(v,k) in localStorageData" id="localDiv" @click="localSelectEvent" :data-index="k" :style="{background:localStorageDataStyle[k]}" @mousemove="localSelectMousemove" >
+	        			<img :src="v.src">
+	        			<input type="" :value="v.name" >
+        			</div>
         		</div>
+        		
         		
         		
 	            

@@ -52,4 +52,7 @@ body {
 #elementSelectBox button:hover{border:3px solid blue;}
 
 #localDiv{margin-top: 10px}
-#localDiv:hover{background: #ccc}
+#localDivOuter{
+    height: 400px;
+    overflow: auto;
+}

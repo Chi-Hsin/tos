@@ -63,12 +63,54 @@ var indexData = new Vue({
                     
                 },
                 "localStorageData":[
-                    {src:"img/tower_local.png",name:"版面一"},
-                    {src:"img/tower_local.png",name:"版面二"},
-                    {src:"img/tower_local.png",name:"版面三"},
-                    {src:"img/tower_local.png",name:"版面四"},
-                    {src:"img/tower_local.png",name:"版面五"},
-                    {src:"img/tower_local.png",name:"版面六"},
+                    {
+                        src:"img/tower_local.png",name:"版面一",content:[
+                        0,0,0,0,0,0,
+                        0,0,0,0,0,0,
+                        0,0,0,0,0,0,
+                        0,0,0,0,0,0,
+                        0,0,0,0,0,0]
+                    },
+                    {
+                        src:"img/tower_local.png",name:"版面二",content:[
+                        0,0,0,0,0,0,
+                        0,0,0,0,0,0,
+                        0,0,0,0,0,0,
+                        0,0,0,0,0,0,
+                        0,0,0,0,0,0]
+                    },
+                    {
+                        src:"img/tower_local.png",name:"版面三",content:[
+                        0,0,0,0,0,0,
+                        0,0,0,0,0,0,
+                        0,0,0,0,0,0,
+                        0,0,0,0,0,0,
+                        0,0,0,0,0,0]
+                    },
+                    {
+                        src:"img/tower_local.png",name:"版面四",content:[
+                        0,0,0,0,0,0,
+                        0,0,0,0,0,0,
+                        0,0,0,0,0,0,
+                        0,0,0,0,0,0,
+                        0,0,0,0,0,0]
+                    },
+                    {
+                        src:"img/tower_local.png",name:"版面五",content:[
+                        0,0,0,0,0,0,
+                        0,0,0,0,0,0,
+                        0,0,0,0,0,0,
+                        0,0,0,0,0,0,
+                        0,0,0,0,0,0]
+                    },
+                    {
+                        src:"img/tower_local.png",name:"版面六",content:[
+                        0,0,0,0,0,0,
+                        0,0,0,0,0,0,
+                        0,0,0,0,0,0,
+                        0,0,0,0,0,0,
+                        0,0,0,0,0,0]
+                    }
                 ],
                 "localStorageDataStyle":[
                     "transparent","transparent","transparent","transparent","transparent","transparent"
@@ -219,7 +261,7 @@ var indexData = new Vue({
                 },
                 resetElementSelect:function(){
                     var index = this.sectionImgUploadData;
-                    this.elementSelectBox[index] = this.elementSelectBoxTemplate[index]
+                    this.$set(this.elementSelectBox, index,  this.elementSelectBoxTemplate[index])
                 },
                 mousePic:function(e){//圖片跟著滑鼠移動
                    
@@ -267,24 +309,70 @@ var indexData = new Vue({
 
                 },
                 localSelectEvent:function(e){//記下 目前點到的儲存版面位置
-                    var index = e.target.getAttribute("data-index");
                     // console.log(index)
+                    var myParent = e.target.parentNode;
+                    if(myParent.id == "localDiv"){
+                        var index = myParent.getAttribute("data-index");
+
+                    }
+                    else{
+                        var index = e.target.getAttribute("data-index");
+                    }
                     this.localSelect = index;
                     for(var i=0;i<this.localStorageDataStyle.length;i++){
                         this.$set(this.localStorageDataStyle, i,  "transparent")
                     }
-                    this.$set(this.localStorageDataStyle, index,  "red")
+                    this.$set(this.localStorageDataStyle, index,  "#ccc")
+
+
                 },
-                saveToLocal:function(){ //儲存當前的照片
-                    // this.localStorageData
+                localSelectMousemove:function(e){//滑鼠移動到該儲存版面位置
+                    var myParent = e.target.parentNode;
+                    if(myParent.id == "localDiv"){
+                        var index = myParent.getAttribute("data-index");
+                    }
+                    else{
+                        var index = e.target.getAttribute("data-index");
+                    }
+                    for(var i=0;i<this.localStorageDataStyle.length;i++){
+                        if(i == index || i == this.localSelect)//如果移動到該位置或是已經點選的位置  都換色
+                        {this.$set(this.localStorageDataStyle, index, "#ccc");continue;}
+                        this.$set(this.localStorageDataStyle, i,  "transparent")
+                    }
+                    
+                },
+                saveToLocal:function(){ //儲存當前的版面截圖與資料
                    var ddd = document.getElementById("elementBoard");
-                   var opt = {scale:0.2};
+                   var opt = {scale:0.2,backgroundColor:null};
                    html2canvas(ddd,opt).then(function(canvas) {
                         var base64 = canvas.toDataURL();
-                        indexData.localStorageData[indexData.localSelect].src = base64;
+                        indexData.$set(indexData.localStorageData[indexData.localSelect],"src", base64)
+                        
                         
                     });
-
+                   //儲存目前版面上的資料
+                   this.$set(this.localStorageData[this.localSelect],"content", this.elementBoardDB)
+                   // var jsonStrinifyData = JSON.stringify(this.localStorageData);
+                   console.log("Step1")
+                   localStorage.setItem("boardData",JSON.stringify(this.localStorageData));
+                   console.log("Step2")
+                },
+                localBoardSet:function(){
+                     var board = this.localStorageData[this.localSelect].content;
+                      for(var i=0;i<30;i++){
+                        var rrr = board[i];
+                        this.elementBoardDB.push(rrr);//儲存此版面
+                        this.elementBoard[i].element = this.elementSelectBox[rrr];
+                    }
+                },
+                localSelectChange:function(){
+                    alert("改變!")
+                },
+                deleteLocal:function(){
+                    if(localStorage.getItem("boardData")){
+                        localStorage.removeItem("boardData");
+                        console.log("已清除暫存")
+                    }
                 },
                 loadingControl:function(){
                     this.loadingPic.blockStyle.display = "none";
@@ -440,9 +528,22 @@ var indexData = new Vue({
                             
                             indexData.loadingPic.randomNumber = Math.floor(Math.random() * 2330);
                             
-
+                            //數秒後讓Loading畫面消失(模擬Loading)
                             setTimeout(indexData.loadingControl,2000)
                         })
+                    }
+
+                    //判斷客戶端是否有資料
+                    if(localStorage.getItem("boardData")){
+                        var jsonParseData = JSON.parse(localStorage.getItem("boardData"));
+                        // indexData.localStorageData = jsonParseData;
+                        indexData.$set(indexData,"localStorageData", jsonParseData)
+                        console.log("客戶端有資料")
+                    }
+                    else{
+                        var jsonStrinifyData = JSON.stringify(indexData.localStorageData);
+                        localStorage.setItem("boardData",jsonStrinifyData)
+                        console.log("客戶端無資料  已建立")
                     }
                 })
                
