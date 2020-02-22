@@ -14,7 +14,7 @@ var indexData = new Vue({
                     'img/tree.png'
                 ],
                 "elementSelectBoxButton":[
-                     "transparent",
+                     "blue",
                      "transparent",
                      "transparent",
                      "transparent",
@@ -367,8 +367,9 @@ var indexData = new Vue({
                         this.elementBoard[i].element = this.elementSelectBox[rrr];
                     }
                 },
-                localSelectChange:function(){
-                    alert("改變!")
+                localDataNameEvent:function(e){//改名字後  儲存到客戶端
+                    // alert("Change")
+                    localStorage.setItem("boardData",JSON.stringify(this.localStorageData));
                 },
                 deleteLocal:function(){
                     if(localStorage.getItem("boardData")){

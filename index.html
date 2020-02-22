@@ -67,7 +67,7 @@
         		<div id="localDivOuter">
         			<div v-for="(v,k) in localStorageData" id="localDiv" @click="localSelectEvent" :data-index="k" :style="{background:localStorageDataStyle[k]}" @mousemove="localSelectMousemove" >
 	        			<img :src="v.src">
-	        			<input type="" :value="v.name" >
+	        			<input type=""  v-model="localStorageData[k].name" @change="localDataNameEvent">
         			</div>
         		</div>
         		
