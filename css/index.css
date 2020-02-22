@@ -53,6 +53,6 @@ body {
 
 #localDiv{margin-top: 10px}
 #localDivOuter{
-    height: 400px;
+    height: 300px;
     overflow: auto;
 }

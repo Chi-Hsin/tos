@@ -125,6 +125,13 @@ var indexData = new Vue({
                 ],
                 "memberList":[],
                 "urlId":"",
+                "fixAlert":{
+                    "style":{
+                        display:"none",
+                        color:"blue"
+                    },
+                    "text":""
+                },
             	'elementBoard':[
                            //第一排珠
                             {index:0,element:'img/heart.png',background:"#3E2615",type:"normal",opacity:1},
@@ -252,7 +259,7 @@ var indexData = new Vue({
                 test5:function(index){//滑鼠放開
                     if(this.handMotionContinue){
                         this.elementBoardDB[index] = this.elementSelectBox.indexOf(this.elementSelect);
-                        this.elementBoard[index].element = this.elementSelect;
+                        this.elementBoard[index].element = this.elementSelectBox[this.sectionImgUploadData];
                         this.handMotionContinue = 0;
                         this.mousePicSetting.style.display = 'none';
                         console.log("滑鼠放開");
@@ -285,16 +292,26 @@ var indexData = new Vue({
                     }
                 },
                 saveElementBoard:function(){//儲存到資料庫
+                    if(!this.fixconfirm("確認儲存到資料庫嗎?")){return;}
                     var key;
                     
                     if(this.urlId == ""){
                         fireRoot.child("memberData").push({"elementBoard":this.elementBoardDB,"elementSelectBox":this.elementSelectBox});
                         fireRoot.child("memberData").limitToLast(1).once("child_added",function(s){
-                            // console.log("新增的這筆資料",",",s.key);
+                            console.log("新增的這筆資料",",",s.key);
                             key = s.key;
                         })
-                        fireRoot.child("memberList").push(key);
-                        window.location.href = "index.html?id=" + key;//重新轉址或重載此頁面
+                        .then(function(){
+                            console.log("AAA")
+                            fireRoot.child("memberList").push(key).then(function(){
+                            window.location.href = "index.html?id=" + key;//重新轉址或重載此頁面
+                        })
+                            console.log("BBB")
+                            
+                        })
+                        
+                        
+
                     }else{
                         var obj = {};
                         obj[this.urlId] = {"elementBoard":this.elementBoardDB,"elementSelectBox":this.elementSelectBox};
@@ -342,6 +359,7 @@ var indexData = new Vue({
                     
                 },
                 saveToLocal:function(){ //儲存當前的版面截圖與資料
+                   if(!this.fixconfirm("確認儲存截圖與版面嗎?")){return;}
                    var ddd = document.getElementById("elementBoard");
                    var opt = {scale:0.2,backgroundColor:null};
                    html2canvas(ddd,opt).then(function(canvas) {
@@ -350,13 +368,11 @@ var indexData = new Vue({
                         console.log("Step1")
                         
                     }).then(function(){
-                         indexData.$set(indexData.localStorageData[indexData.localSelect],"content", indexData.elementBoardDB)
-                           // var jsonStrinifyData = JSON.stringify(this.localStorageData);
-                           console.log("Step2")
-                           localStorage.setItem("boardData",JSON.stringify(indexData.localStorageData));
-                           console.log("Step3")
+                        indexData.$set(indexData.localStorageData[indexData.localSelect],"content", indexData.elementBoardDB)
+                        localStorage.setItem("boardData",JSON.stringify(indexData.localStorageData));
                     });
                    //儲存目前版面上的資料
+                   this.showAlert("儲存當前版面成功!")
                   
                 },
                 localBoardSet:function(){
@@ -371,14 +387,47 @@ var indexData = new Vue({
                     // alert("Change")
                     localStorage.setItem("boardData",JSON.stringify(this.localStorageData));
                 },
-                deleteLocal:function(){
+                deleteLocal:function(){//刪除目前客戶端版面 所有資料
+                    if(!this.fixconfirm("確認還原所有儲存盤面嗎?")){return;}
                     if(localStorage.getItem("boardData")){
                         localStorage.removeItem("boardData");
-                        console.log("已清除暫存")
+                        window.location.href = "index.html?id=" + this.urlId;//重新轉址或重載此頁面
+
+                        // console.log("已清除暫存")
                     }
+                },
+                shareAndCopyLink:function(){//複製當前網站連結
+                    //要複製文字的話  必須藉由text文字框元素的幫助
+                    //藉由 在建立元素之後  移除之  這樣的方式達成
+                    var dummy = document.createElement('input');
+                    var text = window.location.href;
+
+                    document.body.appendChild(dummy);
+                    dummy.value = text;
+                    dummy.select();
+                    document.execCommand('copy');
+                    document.body.removeChild(dummy);
+                    this.showAlert("複製連結成功!")
+
+                },
+                showAlert:function(msg){
+                    this.fixAlert.style.display = "inline-block";
+                    this.fixAlert.text = msg;
+                    setTimeout(function(){
+                        indexData.fixAlert.style.display = "none";
+                        indexData.fixAlert.text = "";
+                    },2000)
                 },
                 loadingControl:function(){
                     this.loadingPic.blockStyle.display = "none";
+                },
+                fixconfirm:function(msg){
+                    if(confirm(msg)){
+                        return true;
+                    }
+                    else{
+                        return false;
+                    }
                 },
                 comboCalc:function(){//計算Combo數  暫時擱置
                     this.boardTemplate = JSON.parse(JSON.stringify(this.elementBoard))
@@ -513,7 +562,7 @@ var indexData = new Vue({
                     if(indexData.memberList.indexOf(urlId) == -1 || urlId == "null"){
                         console.log("使用預設盤面~");
                         indexData.loadingPic.randomNumber = Math.floor(Math.random() * 2330);
-                        setTimeout(indexData.loadingControl,2000)
+                        setTimeout(indexData.loadingControl,3000)
                     }
                     else{
                         console.log("載入已有盤面~");
@@ -532,7 +581,7 @@ var indexData = new Vue({
                             indexData.loadingPic.randomNumber = Math.floor(Math.random() * 2330);
                             
                             //數秒後讓Loading畫面消失(模擬Loading)
-                            setTimeout(indexData.loadingControl,2000)
+                            setTimeout(indexData.loadingControl,3000)
                         })
                     }
 
