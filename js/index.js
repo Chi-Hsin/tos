@@ -347,15 +347,17 @@ var indexData = new Vue({
                    html2canvas(ddd,opt).then(function(canvas) {
                         var base64 = canvas.toDataURL();
                         indexData.$set(indexData.localStorageData[indexData.localSelect],"src", base64)
+                        console.log("Step1")
                         
-                        
+                    }).then(function(){
+                         indexData.$set(indexData.localStorageData[indexData.localSelect],"content", indexData.elementBoardDB)
+                           // var jsonStrinifyData = JSON.stringify(this.localStorageData);
+                           console.log("Step2")
+                           localStorage.setItem("boardData",JSON.stringify(indexData.localStorageData));
+                           console.log("Step3")
                     });
                    //儲存目前版面上的資料
-                   this.$set(this.localStorageData[this.localSelect],"content", this.elementBoardDB)
-                   // var jsonStrinifyData = JSON.stringify(this.localStorageData);
-                   console.log("Step1")
-                   localStorage.setItem("boardData",JSON.stringify(this.localStorageData));
-                   console.log("Step2")
+                  
                 },
                 localBoardSet:function(){
                      var board = this.localStorageData[this.localSelect].content;
